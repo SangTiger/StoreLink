@@ -47,24 +47,45 @@ def load_qoo10(filepath: str) -> list:
     return rows
 
 
-def load_leads(filepath: str) -> list:
+CHANNEL_COUNTRY = {
+    "사람인": "국내",
+    "파우더룸": "국내",
+    "원티드": "국내",
+    "앳코스메": "일본",
+    "LIPS": "일본",
+}
+
+
+def load_leads(filepaths) -> list:
+    """리드 채널(사람인, 파우더룸, 앳코스메, LIPS 등) CSV 파일들을 읽어 합친다.
+
+    filepaths: 단일 경로(str) 또는 경로 리스트.
+    국가는 파일 내 '출처' 컬럼 값을 기준으로 CHANNEL_COUNTRY에서 결정한다.
+    동일 채널을 여러 번 크롤링한 파일이 섞여 있어도 회사명 기준으로
+    중복이 제거되므로 그냥 전부 합쳐서 읽으면 된다.
+    """
+    if isinstance(filepaths, str):
+        filepaths = [filepaths]
+
     rows = []
-    with open(filepath, newline="", encoding="utf-8-sig") as f:
-        for row in csv.DictReader(f):
-            company = row.get("회사명", "").strip()
-            if not company:
-                continue
-            rows.append(
-                {
-                    "channel": row.get("출처", ""),
-                    "company_name": company,
-                    "country": "국내",
-                    "tel": "",
-                    "mail": row.get("이메일", ""),
-                    "url": row.get("URL", ""),
-                    "category": row.get("직무", ""),
-                }
-            )
+    for filepath in filepaths:
+        with open(filepath, newline="", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                company = row.get("회사명", "").strip()
+                if not company:
+                    continue
+                channel = row.get("출처", "")
+                rows.append(
+                    {
+                        "channel": channel,
+                        "company_name": company,
+                        "country": CHANNEL_COUNTRY.get(channel, "미확인"),
+                        "tel": "",
+                        "mail": row.get("이메일", ""),
+                        "url": row.get("URL", ""),
+                        "category": row.get("직무", ""),
+                    }
+                )
     return rows
 
 
