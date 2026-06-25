@@ -1,7 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from crawler.saramin import crawl_saramin
-from crawler.wanted import crawl_wanted
 from utils.export import save_to_csv
 
 
@@ -11,11 +10,10 @@ def main():
         print("키워드를 입력해야 합니다.")
         return
 
-    print(f"\n'{keyword}' 키워드로 사람인 / 원티드 동시 검색을 시작합니다...\n")
+    print(f"\n'{keyword}' 키워드로 사람인 검색을 시작합니다...\n")
 
     tasks = {
         "사람인": crawl_saramin,
-        "원티드": crawl_wanted,
     }
 
     all_results = []

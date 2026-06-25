@@ -74,6 +74,7 @@ def _extract_email_from_detail(driver, link: str) -> str:
     try:
         random_sleep(1.0, 2.0)
         emails = extract_emails_from_page(driver)
+        emails = [e for e in emails if not e.lower().endswith("@saramin.co.kr")]
         email = emails[0] if emails else ""
     except Exception:
         pass
