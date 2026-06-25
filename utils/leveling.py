@@ -138,5 +138,13 @@ def build_brand_db(*row_groups: list) -> list:
                 "URL": ", ".join(sorted(brand["URL"])),
             }
         )
-    result.sort(key=lambda b: (b["레벨"], b["회사명"]))
+    country_order = {"국내": 0, "일본": 1, "미확인": 2}
+    level_order = {"S": 0, "A": 1, "B": 2}
+    result.sort(
+        key=lambda b: (
+            country_order.get(b["국가"], 99),
+            level_order.get(b["레벨"], 99),
+            b["회사명"],
+        )
+    )
     return result
