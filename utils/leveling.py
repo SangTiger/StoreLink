@@ -26,6 +26,24 @@ def country_from_tel(tel: str) -> str:
     return "미확인"
 
 
+def load_aliases(filepath: str) -> dict:
+    """aliases.csv를 읽어 {정규화된_큐텐회사명: 정규화된_매칭회사명} 매핑을 반환한다.
+
+    build_brand_db에서 정규화 키가 다른 두 회사를 같은 브랜드로 묶을 때 사용한다.
+    """
+    aliases = {}
+    try:
+        with open(filepath, newline="", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                src = normalize_company_name(row.get("큐텐_회사명", ""))
+                tgt = normalize_company_name(row.get("매칭_회사명", ""))
+                if src and tgt:
+                    aliases[src] = tgt
+    except FileNotFoundError:
+        pass
+    return aliases
+
+
 def load_qoo10(filepath: str) -> list:
     rows = []
     with open(filepath, newline="", encoding="utf-8-sig") as f:
@@ -97,13 +115,21 @@ def level_from_channel_count(channel_count: int) -> str:
     return "B"
 
 
-def build_brand_db(*row_groups: list) -> list:
+def build_brand_db(*row_groups: list, aliases: dict | None = None) -> list:
+    """row_groups를 합쳐서 회사별로 채널 수를 집계하고 S/A/B 레벨을 부여한다.
+
+    aliases: {정규화된_큐텐회사명: 정규화된_매칭회사명} — 서로 다른 표기를 같은 키로 묶는다.
+    """
+    if aliases is None:
+        aliases = {}
     brands = {}
     for rows in row_groups:
         for row in rows:
             key = normalize_company_name(row["company_name"])
             if not key:
                 continue
+            # aliases에 등록된 경우 대표 키로 통일
+            key = aliases.get(key, key)
             brand = brands.setdefault(
                 key,
                 {

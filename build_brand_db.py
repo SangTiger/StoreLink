@@ -3,7 +3,7 @@ import glob
 import os
 from datetime import datetime
 
-from utils.leveling import build_brand_db, load_leads, load_qoo10
+from utils.leveling import build_brand_db, load_aliases, load_leads, load_qoo10
 
 INFO_DIR = os.path.join(os.path.dirname(__file__), "info")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
@@ -32,9 +32,14 @@ def main():
     for path in lead_paths:
         print(f"  - {path}")
 
+    aliases_path = os.path.join(OUTPUT_DIR, "aliases.csv")
+    aliases = load_aliases(aliases_path)
+    if aliases:
+        print(f"별칭 매핑 {len(aliases)}건 로드: {aliases_path}")
+
     qoo10_rows = load_qoo10(qoo10_path)
     lead_rows = load_leads(lead_paths)
-    brands = build_brand_db(qoo10_rows, lead_rows)
+    brands = build_brand_db(qoo10_rows, lead_rows, aliases=aliases)
 
     level_counts = {"S": 0, "A": 0, "B": 0}
     for brand in brands:
