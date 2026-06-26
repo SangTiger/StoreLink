@@ -1,12 +1,27 @@
 import csv
 import glob
 import os
+import re
 from datetime import datetime
 
 from utils.leveling import build_brand_db, load_aliases, load_leads, load_qoo10
 
 INFO_DIR = os.path.join(os.path.dirname(__file__), "info")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
+
+
+def _next_version_path(output_dir: str) -> str:
+    """기존 brand_db_v{major}.{minor}.csv 파일을 스캔해 다음 마이너 버전 파일명 반환."""
+    pattern = re.compile(r"brand_db_v(\d+)\.(\d+)\.csv$")
+    max_major, max_minor = 1, -1
+    for f in glob.glob(os.path.join(output_dir, "brand_db_v*.csv")):
+        m = pattern.search(os.path.basename(f))
+        if m:
+            mj, mn = int(m.group(1)), int(m.group(2))
+            if (mj, mn) > (max_major, max_minor):
+                max_major, max_minor = mj, mn
+    next_minor = max_minor + 1
+    return f"brand_db_v{max_major}.{next_minor}.csv"
 
 
 def latest_file(pattern: str) -> str | None:
@@ -46,8 +61,7 @@ def main():
         level_counts[brand["레벨"]] += 1
     print(f"\n레벨별 브랜드 수: S={level_counts['S']}, A={level_counts['A']}, B={level_counts['B']}")
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_path = os.path.join(OUTPUT_DIR, f"brand_db_{timestamp}.csv")
+    out_path = os.path.join(OUTPUT_DIR, _next_version_path(OUTPUT_DIR))
     fieldnames = ["국가", "레벨", "회사명", "연락처", "이메일", "채널목록", "URL"]
     with open(out_path, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
