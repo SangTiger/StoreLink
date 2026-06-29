@@ -1,0 +1,13 @@
+applicant: ????Apro
+applicationNumber: 2026069049
+applicationDate: 20260615
+imagePath: http://www.kipris.or.kr/abtm/ws/FT_download.do?LTRTNO=JPTI2026069049&CNTRY=JP&imgType=tiff
+ltrtno: JPTI2026069049
+niceCode: 
+registrationDate: 
+registrationNumber: 
+rightHolder: 
+tradeMarkClassificationCode: 3|32
+tradeMarkName: 
+tradeMarkType: Unknown
+viennaCode: 

@@ -1,0 +1,13 @@
+['출원인', '권리자', '상표명', '출원일자', 'Unnamed: 4']
+
+                              출원인  권리자  상표명      출원일자  Unnamed: 4
+0                        株式会社Apro  NaN  NaN  20260615         NaN
+1                  株式会社エヌ・ティー・エイチ  NaN  NaN  20260615         NaN
+2              株式会社  ヴァーナル|千堂  純子  NaN  NaN  20260615         NaN
+3                    コスメカンパニー株式会社  NaN  NaN  20260615         NaN
+4     ザ  プロクター  アンド  ギャンブル  カンパニー  NaN  NaN  20260615         NaN
+5                         株式会社純閃堂  NaN  NaN  20260615         NaN
+6              COSMETICMAKERS株式会社  NaN  NaN  20260615         NaN
+7  株式会社Dental  Vision  Consulting  NaN  NaN  20260615         NaN
+8                株式会社Moi  de  Moi  NaN  NaN  20260615         NaN
+9       エムディー  ローカル  グローバル  リミテッド  NaN  NaN  20260615         NaN

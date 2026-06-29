@@ -1,0 +1,21 @@
+﻿�� 169�� / ���� �����: 106��
+python : Traceback (most recent call last):
+At line:1 char:37
++ ... :\Users\스토어링크\Desktop\global"; python s
+how_applicants.py 2>&1 | Out-F ...
++                                    ~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (Traceback (most recent call last)::Stri  
+  ng) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+  File "C:\Users\����ũ\Desktop\global\show_a
+pplicants.py", line 9, in <module>
+    print(f"  [{r['�������']}] {r['�˻����']} 
+/ ��ǥ: {r['��ǥ��'][:30] if r['��ǥ��'] else '-
+'}")
+UnicodeEncodeError: 'cp949' codec can't encod
+e character '\u4f1a' in position 15: illegal 
+multibyte sequence
